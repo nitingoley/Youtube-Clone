@@ -1,32 +1,54 @@
-import React from 'react'
-import { AiFillAlert, AiFillEye } from "react-icons/ai"
+import React from "react";
+import { AiFillEye } from "react-icons/ai";
+import moment from "moment";
+import numeral from "numeral";
 import "./_video.scss";
 
-const Video = () => {
+const Video = ({ video }) => {
+  const {
+    id,
+    snippet: {
+      title,
+      channelTitle,
+      publishedAt,
+      thumbnails: { medium },
+    },
+    statistics,
+    contentDetails,
+  } = video;
+
+  const views = statistics?.viewCount || 0;
+  const duration = contentDetails?.duration || "PT0M0S";
+
+  const formatDuration = (duration) => {
+    const match = duration.match(/PT(\d+M)?(\d+S)?/);
+    const minutes = match?.[1]?.replace("M", "") || "0";
+    const seconds = match?.[2]?.replace("S", "") || "00";
+    return `${minutes}:${seconds.padStart(2, "0")}`;
+  };
+
   return (
-    <div className='video'>
-    <div className='video__top'>
-      <img src="https://wallpapers.com/images/featured-full/john-cena-pictures-vcmrqyc1pdyq7tt0.jpg" alt="" />
-      <span>05:53</span>
+    <div className="video">
+      <div className="video__top">
+        <img src={medium.url} alt={title} />
+        <span>{formatDuration(duration)}</span>
+      </div>
+      <div className="video__title">{title}</div>
+      <div className="video__details">
+        <span>
+          <AiFillEye /> {numeral(views).format("0.a").toUpperCase()} views
+        </span>
+        <span>{moment(publishedAt).fromNow()}</span>
+      </div>
+      <div className="video__channel">
+        <img
+          src="https://via.placeholder.com/36"
+          alt={channelTitle}
+        />
+        <p>{channelTitle}</p>
+      </div>
     </div>
-    <div className='video__title'>
-      Create a YouTube Clone with React JS and Firebase
-    </div>
-    <div className='video__details'>
-      <span>
-        <AiFillEye /> 5m Views.
-      </span>
-      <span>
-        5 days ago
-      </span>
-    </div>
-    <div className='video__channel'>
-      <img src="https://imgs.search.brave.com/3Di2gRnMD591Ih5c5O8lgv8tQIQODGpq_v57e-tsJHs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ3/OTEyMjg1MC9waG90/by9pbmdsZXdvb2Qt/Y2FsaWZvcm5pYS1q/b2huLWNlbmEtZHVy/aW5nLXdyZXN0bGVt/YW5pYS1nb2VzLWhv/bGx5d29vZC1hdC1z/b2ZpLXN0YWRpdW0t/b24tYXByaWwtMDEu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTNsT0ZPS3hGcFFZ/aUlXNnV1U1hVMndw/LUZsTktyZGZKSkpO/MGNvRE5xMWc9" alt="" />
-      <p>Lalan Bhai</p>
-    </div>
+  );
+};
 
-    </div>
-  )
-}
-
-export default Video
+export default Video;

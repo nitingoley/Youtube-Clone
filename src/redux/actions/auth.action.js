@@ -1,7 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { auth } from "../../firebase";
-import { LOGIN_OUT, LOGIN_PROFILE, LOGIN_REQUEST, LOGIN_SUCCESS } from "../actionsType";
+import { LOGIN_FAIL, LOGIN_OUT, LOGIN_PROFILE, LOGIN_REQUEST, LOGIN_SUCCESS } from "../actionsType";
 
 
 
@@ -13,6 +13,8 @@ export const login = () => async (dispatch) => {
       type: LOGIN_REQUEST
      })
     const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/youtube.force-ssl');
+    
     const res = await auth.signInWithPopup(provider); 
     
     const accessToken = res.credential.accessToken; 
@@ -46,6 +48,7 @@ export const login = () => async (dispatch) => {
     })
   }
 };
+
 
 
 export const log_out = () => async (dispatch) => {

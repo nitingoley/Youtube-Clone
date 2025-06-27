@@ -1,62 +1,71 @@
 @import "../../base.scss";
 
-
-
-
 .video {
-    margin-bottom: 1rem;
-    padding: 0.7rem;
+  margin-bottom: 1rem;
+  padding: 0.7rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
 
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 
-    font-weight: 500;
-    font-size: 0.9rem;
+  &__top {
+    margin-top: 0.5rem;
+    position: relative;
 
-    cursor: pointer;
+    img {
+      width: 100%;
+      border-radius: 0.5rem;
+    }
 
-    &__top {
-        margin-top: 0.5rem;
-      img {
-        width: 100%;
+    span {
+      position: absolute;
+      bottom: 0.3rem;
+      right: 0.3rem;
+      padding: 0.2rem 0.4rem;
+      background: #080808ec;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      color: white;
+    }
+  }
+
+  &__title {
+    margin-bottom: 0.1rem;
+    color: white;
+    @include line-clamp(2); // Show max 2 lines, clean cut
+  }
+
+  &__details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: #aaa;
+  }
+
+  &__channel {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+
+    img {
+      width: 36px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      cursor: pointer;
+
+      @media (max-width: 768px) {
+        width: 32px;
       }
-
-      span {
-        position: absolute;
-
-        bottom: 0.3rem;
-        right: 0.3rem;
-
-        padding: 0.2rem;
-        background: #080808ec;
-        border-radius: 3px;
-
-    }
     }
 
-    &__title {
-        margin-bottom: 0.1rem;
-        color: white;
-        @include line-clamp(1);     
+    p {
+      margin-bottom: 0;
+      font-size: 0.85rem;
+      color: #ccc;
     }
-
-    &__details {
-        display: flex;
-        align-items: center;
-    }
-
-    &__channel {
-        display: flex;
-        align-items: center;
-        margin: 0.5rem 0;
-
-
-        img {
-            width: 36px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-            cursor: pointer;
-        }
-        p {
-            margin-bottom: 0;
-        }
-    }
+  }
 }
