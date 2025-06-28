@@ -2,19 +2,24 @@ import "./_header.scss";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdNotifications, MdApps } from "react-icons/md";
-import Logo from "../../../public/logo.png";
+import { useSelector } from "react-redux";
+
 const Header = ({ handleToggleSidebar }) => {
+  const { user } = useSelector((state) => state.auth);
+  const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
   return (
     <div className="border border-dark header">
       <FaBars
         className="header__menu"
         size={26}
-        onClick={()=>handleToggleSidebar(false)}
+        onClick={() => handleToggleSidebar(false)}
       />
+
       <img
         className="header__logo"
-        src= "https://imgs.search.brave.com/0jMEbl-2WeSaQHRXZ2T0rRRxpr6bYa9d5QILr3u6B8M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly8xMDAw/bG9nb3MubmV0L3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDE3LzA1/L1lvdXR1YmUtTG9n/by01MDB4MjgxLnBu/Zw"
-        alt="logo"
+        src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"
+        alt="YouTube Logo"
       />
 
       <form action="">
@@ -29,8 +34,12 @@ const Header = ({ handleToggleSidebar }) => {
         <MdApps className="header__icon" size={26} />
         <img
           className="header_avatar"
-          src="https://imgs.search.brave.com/QOecsdnPq78UqgzvEnY5aAHTgaC6tRkfvtb81t7-nb0/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/aWNvbnNjb3V0LmNv/bS9pY29uL2ZyZWUv/cG5nLTI1Ni9mcmVl/LWF2YXRhci1pY29u/LWRvd25sb2FkLWlu/LXN2Zy1wbmctZ2lm/LWZpbGUtZm9ybWF0/cy0tdXNlci1kZXNp/Z25lci1hdmF0YXJz/LWZsYXQtaWNvbnMt/cGFjay1wZW9wbGUt/NDU2MzIwLnBuZz9m/PXdlYnAmdz0xMjg"
-          alt="avatar"
+          src={user?.photoURL || defaultAvatar}
+          alt={user?.name || "Avatar"}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = defaultAvatar;
+          }}
         />
       </div>
     </div>

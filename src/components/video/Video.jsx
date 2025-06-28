@@ -21,9 +21,9 @@ const Video = ({ video }) => {
   const duration = contentDetails?.duration || "PT0M0S";
 
   const formatDuration = (duration) => {
-    const match = duration.match(/PT(\d+M)?(\d+S)?/);
-    const minutes = match?.[1]?.replace("M", "") || "0";
-    const seconds = match?.[2]?.replace("S", "") || "00";
+    const match = duration.match(/PT(?:(\d+)M)?(?:(\d+)S)?/);
+    const minutes = match?.[1] || "0";
+    const seconds = match?.[2] || "0";
     return `${minutes}:${seconds.padStart(2, "0")}`;
   };
 
@@ -41,10 +41,7 @@ const Video = ({ video }) => {
         <span>{moment(publishedAt).fromNow()}</span>
       </div>
       <div className="video__channel">
-        <img
-          src="https://via.placeholder.com/36"
-          alt={channelTitle}
-        />
+        <img src="https://via.placeholder.com/36" alt={channelTitle} />
         <p>{channelTitle}</p>
       </div>
     </div>

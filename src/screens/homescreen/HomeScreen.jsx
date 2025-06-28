@@ -1,35 +1,57 @@
-import React, { useEffect } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import Video from "../../components/video/Video";
-import CategoriesBar from "../../components/categoriesBar/CategoriesBar";
-import { getPopularVideos, getVideosByCategory } from "../../redux/actions/videos.action";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from 'react'
+import { Col, Container } from 'react-bootstrap'
+import Video from '../../components/video/Video'
+import CategoriesBar from '../../components/categoriesBar/CategoriesBar'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  getPopularVideos,
+  getVideosByCategory,
+} from '../../redux/actions/videos.action'
 
-function HomeScreen() {
-  const dispatch = useDispatch();
+import InfiniteScroll from 'react-infinite-scroll-component'
 
-  const { videos, activeCategory } = useSelector(state => state.homeVideos);
+const HomeScreen = () => {
+  const dispatch = useDispatch()
+
+  const { videos, activeCategory, nextPageToken } = useSelector(
+    state => state.homeVideos
+  )
 
   useEffect(() => {
-    if (activeCategory === "All") {
-      dispatch(getPopularVideos());
+    dispatch(getPopularVideos())
+  }, [dispatch])
+
+  const fetchData = () => {
+    if (activeCategory === 'All') {
+      dispatch(getPopularVideos(nextPageToken))
     } else {
-      dispatch(getVideosByCategory(activeCategory));
+      dispatch(getVideosByCategory(activeCategory, nextPageToken))
     }
-  }, [dispatch, activeCategory]);
+  }
 
   return (
-    <Container>
-      <CategoriesBar />
-      <Row>
+    <Container fluid>
+      <div style={{ marginBottom: '1rem' }}>
+        <CategoriesBar />
+      </div>
+
+      <InfiniteScroll
+        dataLength={videos.length}
+        next={fetchData}
+        hasMore={true}
+        loader={
+          <div className='spinner-border text-danger d-block mx-auto'></div>
+        }
+        className='row'
+      >
         {videos.map((video) => (
-          <Col lg={3} md={4} key={video.id?.videoId || video.id}>
+          <Col key={video.id} lg={3} md={4} sm={6} xs={12}>
             <Video video={video} />
           </Col>
         ))}
-      </Row>
+      </InfiniteScroll>
     </Container>
-  );
+  )
 }
 
-export default HomeScreen;
+export default HomeScreen

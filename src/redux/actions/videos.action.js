@@ -1,10 +1,13 @@
-import request from "../../api";     
+import request from "../../api";
 
+import {
+  HOME_VIDEOS_FAIL,
+  HOME_VIDEOS_REQUEST,
+  HOME_VIDEOS_SUCCESS,
+} from "../actionsType";
 
-import { HOME_VIDEOS_FAIL, HOME_VIDEOS_REQUEST, HOME_VIDEOS_SUCCESS } from "../actionsType";
-
-
-export const getPopularVideos = () => async (dispatch) => {
+// Fetch popular videos (with optional pagination token)
+export const getPopularVideos = (pageToken = "") => async (dispatch) => {
   try {
     dispatch({ type: HOME_VIDEOS_REQUEST });
 
@@ -14,6 +17,7 @@ export const getPopularVideos = () => async (dispatch) => {
         chart: "mostPopular",
         regionCode: "IN",
         maxResults: 20,
+        pageToken, // for pagination
       },
     });
 
@@ -33,7 +37,8 @@ export const getPopularVideos = () => async (dispatch) => {
   }
 };
 
-export const getVideosByCategory = (keyword) => async (dispatch) => {
+// Fetch videos by category (keyword) with optional pageToken
+export const getVideosByCategory = (keyword, pageToken = "") => async (dispatch) => {
   try {
     dispatch({ type: HOME_VIDEOS_REQUEST });
 
@@ -43,10 +48,35 @@ export const getVideosByCategory = (keyword) => async (dispatch) => {
         q: keyword,
         maxResults: 20,
         type: "video",
+        pageToken, // for pagination
       },
     });
 
+    if (data.items.length === 0) {
+      // No videos found - dispatch success with empty list
+      return dispatch({
+        type: HOME_VIDEOS_SUCCESS,
+        payload: {
+          videos: [],
+          nextPageToken: null,
+          category: keyword,
+        },
+      });
+    }
+
     const videoIds = data.items.map((item) => item.id.videoId).join(",");
+
+    if (!videoIds) {
+      // No valid video IDs found, dispatch empty results
+      return dispatch({
+        type: HOME_VIDEOS_SUCCESS,
+        payload: {
+          videos: [],
+          nextPageToken: data.nextPageToken || null,
+          category: keyword,
+        },
+      });
+    }
 
     const { data: videoDetails } = await request("/videos", {
       params: {

@@ -20,51 +20,55 @@ import { useNavigate } from "react-router-dom";
 
 function Sidebar({ sidebar, handleToggleSidebar }) {
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+
   const LogoutHandler = () => {
     dispatch(log_out());
-    navigate('/auth')
+    navigate("/auth");
   };
+
   return (
-    <nav
-      className={sidebar ? "sidebar open" : "sidebar"}
-      onClick={() => handleToggleSidebar(false)}
-    >
-      <li>
-        <MdHome size={23} />
-        <span>Home</span>
-      </li>
+    <nav className={sidebar ? "sidebar open" : "sidebar"}>
+      <ul onClick={() => handleToggleSidebar(false)}>
+        <li>
+          <MdHome size={23} />
+          <span>Home</span>
+        </li>
 
-      <li>
-        <MdSubscriptions size={23} />
-        <span>Subscriptions</span>
-      </li>
+        <li>
+          <MdSubscriptions size={23} />
+          <span>Subscriptions</span>
+        </li>
 
-      <li>
-        <MdThumbUp size={23} />
-        <span>Liked</span>
-      </li>
-      <li>
-        <MdHistory size={23} />
-        <span>History</span>
-      </li>
+        <li>
+          <MdThumbUp size={23} />
+          <span>Liked</span>
+        </li>
 
-      <li>
-        <MdSentimentVeryDissatisfied size={23} />
-        <span>Not Liked</span>
-      </li>
-      <hr />
-      <li
-        onClick={() => {
-          console.log("Logout clicked");
-          LogoutHandler();
-        }}
-      >
-        <MdExitToApp size={23} />
-        <span>Log Out</span>
-      </li>
-      <hr />
+        <li>
+          <MdHistory size={23} />
+          <span>History</span>
+        </li>
+
+        <li>
+          <MdSentimentVeryDissatisfied size={23} />
+          <span>Not Liked</span>
+        </li>
+
+        <hr />
+
+        <li
+          onClick={() => {
+            console.log("Logout clicked");
+            LogoutHandler();
+          }}
+        >
+          <MdExitToApp size={23} />
+          <span>Log Out</span>
+        </li>
+
+        <hr />
+      </ul>
     </nav>
   );
 }

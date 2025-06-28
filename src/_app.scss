@@ -1,5 +1,17 @@
 .app_container {
   display: flex;
-  height: 90vh;
+  /* Sidebar and main content side by side */
+}
+
+.app_main {
+  padding-top: 10vh;  
+  flex-grow: 1;
+  overflow-y: auto;
+  min-height: 90vh;   
+  background-color: #121212; 
+  color: white;
   
+  @media (max-width: 600px) {
+    padding-top: 12vh;
+  }
 }
